@@ -37,6 +37,26 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    "mobile-ss-ver2",
+    "luxury-travel-next",
+    "_mobile_extract",
+    "_extracted_new",
+    "src_extracted",
+    "base",
+    "halong-cruise-wp",
+    "docs",
+    "app/app",
+    "components/components",
+    "lib/lib",
+    "scripts/scripts",
+    "public/public",
+    "prisma/prisma",
+    "design-system/design-system",
+    "design-tokens/design-tokens",
+    "messages/messages",
+    "i18n/i18n",
+    "data/data"
   ]
 }
