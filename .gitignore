@@ -1,0 +1,47 @@
+﻿# ===== Dependencies =====
+node_modules/
+
+# ===== Next.js =====
+.next/
+out/
+
+# ===== Build/cache =====
+.cache/
+dist/
+build/
+tsconfig.tsbuildinfo
+
+# ===== Env/secrets =====
+.env
+.env.*
+!.env.example
+
+# ===== Logs & runtime =====
+*.log
+*.pid
+*.pid.lock
+.local-logs/
+.local-data/
+embedded-postgres-local.pid
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===== OS/editor =====
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===== Dev screenshots / temp files =====
+tmp-*
+*.tsbuildinfo
+*.cmd
+TONG_HOP_SRC.txt
+vietnam-new-assets-contact-sheet.jpg
+
+# ===== Backup / archive =====
+*.rar
+*.zip
+backup_*/
