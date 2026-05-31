@@ -23,7 +23,21 @@ const nextConfig = {
     ]
   },
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion']
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+    // Ngăn NFT bundle các file ảnh tĩnh trong public/ vào serverless function
+    // public/ được Vercel CDN phục vụ riêng, không cần trong function bundle
+    outputFileTracingExcludes: {
+      '**': [
+        './public/**',
+        './mobile-ss-ver2/**',
+        './docs/**',
+        './_extracted_new/**',
+        './_mobile_extract/**',
+        './src_extracted/**',
+        './base/**',
+        './halong-cruise-wp/**',
+      ],
+    },
   },
   async headers() {
     // In development avoid setting long-lived immutable Cache-Control for Next static chunks
