@@ -40,7 +40,8 @@
     "smoke:real-page-mirror": "node scripts/real-page-mirror-smoke.mjs",
     "smoke:maps-embed": "node scripts/google-maps-embed-smoke.mjs",
     "audit:public-source": "node scripts/public-source-audit.mjs",
-    "quality:enrich-real": "node scripts/enrich-real-content-quality.mjs"
+    "quality:enrich-real": "node scripts/enrich-real-content-quality.mjs",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
