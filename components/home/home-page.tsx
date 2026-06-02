@@ -9,7 +9,6 @@ import type { CmsBlockNode, ReusableBlockMap } from '@/lib/blocks/block-types';
 import { defaultSiteContent, resolveHomeSectionContent, type HomeSectionId, type SiteContent } from '@/lib/site-content-schema';
 
 // Restored missing sections imports
-import { DestinationMosaic } from '@/components/sections/destination-mosaic';
 import { TripStyleDeck } from '@/components/sections/trip-style-deck';
 import { HomeFeatureSpotlight } from '@/components/sections/home-feature-spotlight';
 import { JourneyFlow } from '@/components/sections/journey-flow';
@@ -23,6 +22,8 @@ const MemoryGallery = dynamic(() => import('@/components/sections/memory-gallery
 // FeaturedTours và TravelDesignersStrip nặng (Framer Motion + complex logic) — lazy để giảm TBT
 const FeaturedTours = dynamic(() => import('@/components/sections/featured-tours').then(m => ({ default: m.FeaturedTours })));
 const TravelDesignersStrip = dynamic(() => import('@/components/sections/travel-designers-strip').then(m => ({ default: m.TravelDesignersStrip })));
+// DestinationMosaic dùng Framer Motion qua DestinationCard3D — code-split để giảm TBT
+const DestinationMosaic = dynamic(() => import('@/components/sections/destination-mosaic').then(m => ({ default: m.DestinationMosaic })));
 
 type HomePageProps = {
   tours: CmsItem[];

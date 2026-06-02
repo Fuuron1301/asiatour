@@ -9,7 +9,6 @@ import type { CmsBlockNode, ReusableBlockMap } from '@/lib/blocks/block-types';
 import { defaultSiteContent, resolveHomeSectionContent, type HomeSectionId, type SiteContent } from '@/lib/site-content-schema';
 
 // Restored missing sections imports
-import { DestinationMosaic } from '@/components/sections/destination-mosaic';
 import { TripStyleDeck } from '@/components/sections/trip-style-deck';
 import { HomeFeatureSpotlight } from '@/components/sections/home-feature-spotlight';
 import { JourneyFlow } from '@/components/sections/journey-flow';
@@ -22,6 +21,7 @@ const BlogPreview = dynamic(() => import('@/components/sections/blog-preview').t
 const MemoryGallery = dynamic(() => import('@/components/sections/memory-gallery').then(m => ({ default: m.MemoryGallery })));
 const FeaturedTours = dynamic(() => import('@/components/sections/featured-tours').then(m => ({ default: m.FeaturedTours })));
 const TravelDesignersStrip = dynamic(() => import('@/components/sections/travel-designers-strip').then(m => ({ default: m.TravelDesignersStrip })));
+const DestinationMosaic = dynamic(() => import('@/components/sections/destination-mosaic').then(m => ({ default: m.DestinationMosaic })));
 
 type HomePageProps = {
   tours: CmsItem[];
