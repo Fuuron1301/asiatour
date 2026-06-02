@@ -54,10 +54,9 @@ export function HomeFeatureSpotlight({ content = defaultHomeSectionContent.spotl
               src={content.heroImage}
               alt={content.heroImageAlt}
               fill
-              sizes="3840px"
-              quality={100}
+              sizes="(min-width: 1280px) 55vw, 100vw"
+              quality={85}
               priority
-              unoptimized
               className="object-cover contrast-[1.08] saturate-[1.07]"
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,27,43,0.04),rgba(11,27,43,0.12)_42%,rgba(11,27,43,0.58)_100%)]" />
@@ -86,9 +85,8 @@ export function HomeFeatureSpotlight({ content = defaultHomeSectionContent.spotl
                     src={image}
                     alt={alt}
                     fill
-                    sizes="3840px"
-                    quality={100}
-                    unoptimized
+                    sizes="(min-width: 1280px) 20vw, 40vw"
+                    quality={75}
                     className="object-cover contrast-[1.08] saturate-[1.07] transition duration-700 ease-luxe group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,27,43,0.04),rgba(11,27,43,0.16))]" />

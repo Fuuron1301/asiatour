@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { ReactNode } from 'react';
@@ -61,15 +62,18 @@ export function DestinationCard3D({
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="relative isolate h-full overflow-hidden rounded-[30px] border border-pearl/20 bg-navy shadow-[0_24px_70px_rgba(11,27,43,0.18)]"
       >
-        {/* Direct img keeps this remote visual atlas reliable when image optimization requests time out. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={image}
           alt={imageAlt ?? title}
-          loading="eager"
-          fetchPriority="high"
-          decoding={imagePriority ? 'sync' : 'async'}
-          className="absolute inset-0 h-full w-full object-cover transition duration-1000 ease-luxe group-hover:scale-[1.045]"
+          fill
+          priority={imagePriority}
+          sizes={isFeature
+            ? '(min-width: 1280px) 58vw, (min-width: 768px) calc(75vw - 32px), 100vw'
+            : '(min-width: 1280px) 28vw, (min-width: 768px) calc(50vw - 32px), 100vw'
+          }
+          quality={85}
+          className="object-cover transition duration-1000 ease-luxe group-hover:scale-[1.045]"
           style={{ objectPosition: imagePosition }}
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,27,43,0.02)_0%,rgba(11,27,43,0.10)_34%,rgba(11,27,43,0.78)_100%)]" />
