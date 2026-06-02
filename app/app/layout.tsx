@@ -7,7 +7,7 @@ const manrope = Manrope({
   subsets: ['latin', 'latin-ext'],
   weight: ['300', '400', '500', '700', '800'],
   variable: '--font-manrope',
-  display: 'swap',
+  display: 'optional',
   preload: true
 });
 
@@ -15,7 +15,7 @@ const playfair = Playfair_Display({
   subsets: ['latin', 'latin-ext'],
   weight: ['500', '600', '700', '800'],
   variable: '--font-playfair',
-  display: 'swap',
+  display: 'optional',
   preload: true
 });
 
@@ -24,7 +24,7 @@ const cormorant = Cormorant_Garamond({
   weight: ['300', '400', '500', '600', '700'],
   style: ['normal', 'italic'],
   variable: '--font-cormorant',
-  display: 'swap',
+  display: 'optional',
   preload: false
 });
 
@@ -32,7 +32,7 @@ const jost = Jost({
   subsets: ['latin', 'latin-ext'],
   weight: ['300', '400', '500', '600'],
   variable: '--font-jost',
-  display: 'swap',
+  display: 'optional',
   preload: false
 });
 import { NextIntlClientProvider } from 'next-intl';
