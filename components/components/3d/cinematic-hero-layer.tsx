@@ -24,7 +24,10 @@ function selectClientHeroImage(key: string, images: HeroLayerImage[], fallback: 
     previousSrc = null;
   }
 
-  const selected = pickNextImage(images, previousSrc) ?? fallback;
+  // Lần đầu tiên truy cập (chưa có localStorage): giữ ngân fallback (= ảnh server render)
+  // để tránh LCP penalty từ việc re-download ảnh mới không có preload hint.
+  // Lần sau: rotate sang ảnh khác (đã có trong cache browser).
+  const selected = previousSrc === null ? fallback : (pickNextImage(images, previousSrc) ?? fallback);
   selectedImages.set(key, selected);
 
   try {
