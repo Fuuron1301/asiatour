@@ -14,7 +14,7 @@ const nextConfig = {
   images: {
     // Serve AVIF first (best compression), fallback to WebP, then original
     formats: ['image/avif', 'image/webp'],
-    qualities: [75, 85, 90, 92, 95],
+    qualities: [75, 80, 85, 90, 92, 94, 95, 96, 100],
     // Cache optimized images for 1 year
     minimumCacheTTL: 31536000,
     remotePatterns: [
@@ -52,10 +52,10 @@ const nextConfig = {
     };
 
     const cssAndImageCacheHeader = {
-      // Cache CSS and image assets for 1 year in production
+      // Cache CSS and image assets for 30 minutes (1800 seconds)
       source: '/(:path*\\.(?:css|png|jpg|jpeg|svg|webp|avif|gif))',
       headers: [
-        { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+        { key: 'Cache-Control', value: 'public, max-age=1800' }
       ]
     };
 
