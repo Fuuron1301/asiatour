@@ -48,6 +48,19 @@ function slimTestimonial(t: CmsItem) {
   } as CmsItem;
 }
 
+function slimStyle(s: CmsItem) {
+  return {
+    id: s.id,
+    type: s.type,
+    slug: s.slug,
+    title: s.title,
+    featuredImage: s.featuredImage,
+    excerpt: s.excerpt,
+    content: '',
+    meta: { details: s.meta.details ?? {} },
+  } as CmsItem;
+}
+
 export default async function Page() {
   const [tours, styles, testimonials, posts, siteContent] = await Promise.all([
     getContent('tours'),
@@ -60,7 +73,7 @@ export default async function Page() {
   const reusableBlocks = cmsBlocks.length ? await getReusableBlockMap() : undefined;
   return <HomePage
     tours={tours.slice(0, 30).map(slimTour)}
-    styles={styles}
+    styles={styles.map(slimStyle)}
     testimonials={testimonials.slice(0, 5).map(slimTestimonial)}
     posts={posts.slice(0, 9).map(slimPost)}
     siteContent={siteContent}
