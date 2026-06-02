@@ -121,7 +121,7 @@ export function TravelStyleAtlas({ content = defaultStaticPagesContent.travelSty
           fill
           priority
           sizes="100vw"
-          quality={100}
+          quality={85}
           className="object-cover object-center brightness-[0.78] contrast-[1.04] saturate-[1.08]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,13,22,0.86)_0%,rgba(5,13,22,0.58)_45%,rgba(5,13,22,0.28)_100%)]" />

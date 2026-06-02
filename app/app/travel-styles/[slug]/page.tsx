@@ -141,7 +141,7 @@ function Hero({ detail }: { detail: StyleDetail }) {
         fill
         sizes="100vw"
         priority
-        quality={100}
+        quality={85}
         className="object-cover object-center brightness-[0.78] saturate-[1.08]"
       />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,13,22,0.82)_0%,rgba(5,13,22,0.52)_46%,rgba(5,13,22,0.30)_100%)]" />
@@ -229,7 +229,7 @@ function Photography({ detail }: { detail: StyleDetail }) {
         <SectionLabel>Photography</SectionLabel>
         <div className="mt-[34px] grid gap-[14px] lg:grid-cols-[minmax(0,1fr)_400px]">
           <div className="relative min-h-[360px] overflow-hidden rounded-[18px] bg-champagne md:min-h-[520px]">
-            <Image src={hero.image} alt={hero.alt} fill sizes="(min-width: 1280px) 820px, 100vw" quality={100} className="object-cover" />
+            <Image src={hero.image} alt={hero.alt} fill sizes="(min-width: 1280px) 820px, 100vw" quality={85} className="object-cover" />
           </div>
           <div className="grid gap-[14px] sm:grid-cols-3 lg:grid-cols-1">
             {supporting.slice(0, 3).map((item, index) => (
