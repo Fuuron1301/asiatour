@@ -1,8 +1,8 @@
 import { CmsItem } from '@/lib/types';
 import type { ReactNode } from 'react';
+import dynamic from 'next/dynamic';
 import { HeroSection } from '@/components/sections/hero-section';
 import { WhyChooseUs } from '@/components/sections/why-choose-us';
-import { TestimonialCinema } from '@/components/sections/testimonial-cinema';
 import { HeroTourSearch } from '@/components/sections/hero-tour-search';
 import { CmsBlockRenderer } from '@/components/blocks/cms-block-renderer';
 import type { CmsBlockNode, ReusableBlockMap } from '@/lib/blocks/block-types';
@@ -11,14 +11,17 @@ import { defaultSiteContent, resolveHomeSectionContent, type HomeSectionId, type
 // Restored missing sections imports
 import { DestinationMosaic } from '@/components/sections/destination-mosaic';
 import { TripStyleDeck } from '@/components/sections/trip-style-deck';
-import { FeaturedTours } from '@/components/sections/featured-tours';
 import { HomeFeatureSpotlight } from '@/components/sections/home-feature-spotlight';
 import { JourneyFlow } from '@/components/sections/journey-flow';
 import { EasyBookingSteps } from '@/components/sections/easy-booking-steps';
-import { TravelDesignersStrip } from '@/components/sections/travel-designers-strip';
 import { TrustedByStrip } from '@/components/sections/trusted-by-strip';
-import { BlogPreview } from '@/components/sections/blog-preview';
-import { MemoryGallery } from '@/components/sections/memory-gallery';
+
+// Lazy-loaded để giảm TBT và JS bundle ban đầu
+const TestimonialCinema = dynamic(() => import('@/components/sections/testimonial-cinema').then(m => ({ default: m.TestimonialCinema })));
+const BlogPreview = dynamic(() => import('@/components/sections/blog-preview').then(m => ({ default: m.BlogPreview })));
+const MemoryGallery = dynamic(() => import('@/components/sections/memory-gallery').then(m => ({ default: m.MemoryGallery })));
+const FeaturedTours = dynamic(() => import('@/components/sections/featured-tours').then(m => ({ default: m.FeaturedTours })));
+const TravelDesignersStrip = dynamic(() => import('@/components/sections/travel-designers-strip').then(m => ({ default: m.TravelDesignersStrip })));
 
 type HomePageProps = {
   tours: CmsItem[];

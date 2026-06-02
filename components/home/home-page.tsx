@@ -11,17 +11,18 @@ import { defaultSiteContent, resolveHomeSectionContent, type HomeSectionId, type
 // Restored missing sections imports
 import { DestinationMosaic } from '@/components/sections/destination-mosaic';
 import { TripStyleDeck } from '@/components/sections/trip-style-deck';
-import { FeaturedTours } from '@/components/sections/featured-tours';
 import { HomeFeatureSpotlight } from '@/components/sections/home-feature-spotlight';
 import { JourneyFlow } from '@/components/sections/journey-flow';
 import { EasyBookingSteps } from '@/components/sections/easy-booking-steps';
-import { TravelDesignersStrip } from '@/components/sections/travel-designers-strip';
 import { TrustedByStrip } from '@/components/sections/trusted-by-strip';
 
 // Các section nặng ở cuối trang — lazy load để giảm JS bundle ban đầu
 const TestimonialCinema = dynamic(() => import('@/components/sections/testimonial-cinema').then(m => ({ default: m.TestimonialCinema })));
 const BlogPreview = dynamic(() => import('@/components/sections/blog-preview').then(m => ({ default: m.BlogPreview })));
 const MemoryGallery = dynamic(() => import('@/components/sections/memory-gallery').then(m => ({ default: m.MemoryGallery })));
+// FeaturedTours và TravelDesignersStrip nặng (Framer Motion + complex logic) — lazy để giảm TBT
+const FeaturedTours = dynamic(() => import('@/components/sections/featured-tours').then(m => ({ default: m.FeaturedTours })));
+const TravelDesignersStrip = dynamic(() => import('@/components/sections/travel-designers-strip').then(m => ({ default: m.TravelDesignersStrip })));
 
 type HomePageProps = {
   tours: CmsItem[];
