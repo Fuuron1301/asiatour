@@ -237,6 +237,7 @@ export function TourDetailPage({ tour, relatedTours = [], relatedPosts = [] }: {
   const [showPriceMenu, setShowPriceMenu] = useState(false);
   const [heroSlideIndex, setHeroSlideIndex] = useState(0);
   const [activeTabHref, setActiveTabHref] = useState<string>(tourDetailTabs[0][1]);
+  const [isMobile, setIsMobile] = useState(false);
   const gallery = Array.from(new Set([tour.featuredImage, ...(tour.meta.gallery || [])].filter(Boolean)));
   const faq = tour.meta.faq || [];
   const itinerary = tour.meta.itinerary || [];
@@ -314,6 +315,13 @@ export function TourDetailPage({ tour, relatedTours = [], relatedPosts = [] }: {
   ];
   const mapsEmbedSrc = extractGoogleMapsEmbedSrc(details.googleMapsEmbed) || buildGoogleMapsEmbedSrcFromStops(routeStops);
   const heroSlides = visualGallery.length ? visualGallery : [heroImage].filter(Boolean) as string[];
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     if (heroSlides.length <= 1) return;
@@ -518,7 +526,7 @@ export function TourDetailPage({ tour, relatedTours = [], relatedPosts = [] }: {
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
                   background: '#ffffff',
                   border: '1px solid #ede8e0',
                   borderRadius: '18px',
@@ -532,7 +540,7 @@ export function TourDetailPage({ tour, relatedTours = [], relatedPosts = [] }: {
                   { label: 'Destinations', value: routeStops.length ? `${routeStops.length} Stops` : 'Custom route', sub: (routeStops.slice(0, 2).join(' to ') || routeSummary.slice(0, 28)) || 'Tailor-made route' },
                   { label: 'Travel Style', value: style, sub: 'Fully customised' },
                 ].map((stat, idx) => (
-                  <div key={stat.label} style={{ padding: '28px 32px', borderRight: idx < 3 ? '1px solid #ede8e0' : 'none' }}>
+                  <div key={stat.label} style={{ padding: isMobile ? '18px 16px' : '28px 32px', borderRight: isMobile ? (idx % 2 === 0 ? '1px solid #ede8e0' : 'none') : (idx < 3 ? '1px solid #ede8e0' : 'none'), borderBottom: isMobile && idx < 2 ? '1px solid #ede8e0' : 'none' }}>
                     <p style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', fontFamily: 'sans-serif', fontWeight: 700, color: '#b8935a', margin: '0 0 14px' }}>{stat.label}</p>
                     <p style={{ fontSize: 'clamp(1.35rem, 2vw, 1.75rem)', fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.02em', color: '#0d1f35', margin: '0 0 8px', fontFamily: "'Georgia', serif" }}>{stat.value}</p>
                     <p style={{ fontSize: '13.5px', fontWeight: 500, lineHeight: 1.5, color: 'rgba(13,31,53,0.5)', margin: 0, fontFamily: 'sans-serif' }}>{stat.sub}</p>
@@ -946,12 +954,13 @@ export function TourDetailPage({ tour, relatedTours = [], relatedPosts = [] }: {
             style={{
               background: 'linear-gradient(135deg, #0d1f35 0%, #122840 100%)',
               borderRadius: '16px',
-              padding: '18px 24px',
+              padding: isMobile ? '16px' : '18px 24px',
               display: 'flex',
-              alignItems: 'center',
+              alignItems: isMobile ? 'flex-start' : 'center',
+              flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
               boxShadow: '0 8px 40px rgba(13,31,53,0.22)',
-              gap: '24px',
+              gap: isMobile ? '12px' : '24px',
               marginBottom: '32px',
             }}
           >
@@ -1212,12 +1221,12 @@ export function TourDetailPage({ tour, relatedTours = [], relatedPosts = [] }: {
           <div style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
 
             {/* Header */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '28px' }}>
+            <div style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'flex-start', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', marginBottom: '28px', gap: isMobile ? '12px' : '0' }}>
               <div>
                 <span style={{ display: 'block', color: '#b8935a', fontSize: '12px', fontWeight: 900, letterSpacing: '0.28em', textTransform: 'uppercase', fontFamily: 'sans-serif', marginBottom: '14px' }}>Guest Reviews</span>
-                <h2 style={{ color: '#0d1f35', fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0 }}>What Our Guests Say</h2>
+                <h2 style={{ color: '#0d1f35', fontSize: isMobile ? '1.8rem' : 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0 }}>What Our Guests Say</h2>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: isMobile ? '0' : '6px' }}>
                 <div style={{ display: 'flex', gap: '2px' }}>
                   {[1,2,3,4,5].map(i => <Star key={i} size={14} fill="#c9a96e" color="#c9a96e" strokeWidth={1.5} />)}
                 </div>
@@ -1227,7 +1236,7 @@ export function TourDetailPage({ tour, relatedTours = [], relatedPosts = [] }: {
             </div>
 
             {/* Stats Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '32px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: '10px', marginBottom: '32px' }}>
               {[
                 { value: score ? score.toFixed(1) + '/5' : rating + '/5', label: 'Average Rating', sub: 'Guest verified reviews' },
                 { value: '98%', label: 'Recommend Us', sub: 'To friends & family' },
@@ -1243,7 +1252,7 @@ export function TourDetailPage({ tour, relatedTours = [], relatedPosts = [] }: {
             </div>
 
             {/* Review Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '48px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr', gap: '12px', marginBottom: '48px' }}>
               {[
                 { name: 'Sarah M.', country: 'Australia', date: 'March 2025', title: 'Genuinely one of the best travel days of my life', text: 'We did the cycling and cooking session as a couple celebrating our anniversary. The guide was warm, the pace was relaxed, and the farmhouse lunch felt completely authentic. Nothing felt staged.', tag: 'Couples' },
                 { name: 'James T.', country: 'United Kingdom', date: 'January 2025', title: 'The herbal session at the end was unexpected magic', text: 'I booked this mostly for the cycling but the herbal wellness close at the end completely surprised me. Sitting outside with the foot soak after the ride, looking out over the garden — it\'s the kind of moment you don\'t plan for.', tag: 'Solo' },
@@ -1305,19 +1314,19 @@ export function TourDetailPage({ tour, relatedTours = [], relatedPosts = [] }: {
       {/* â”€â”€ Booking â”€â”€ */}
       <section id="booking" className="scroll-mt-[158px]" style={{ background: '#f0ece6', padding: '48px 0', fontFamily: "'Georgia', 'Times New Roman', serif" }}>
         <Container width="page">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '24px', alignItems: 'flex-start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 320px', gap: '24px', alignItems: 'flex-start' }}>
 
             {/* LEFT FORM */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
               <div style={{ marginBottom: '28px' }}>
                 <span style={{ display: 'block', color: '#b8935a', fontSize: '12px', fontWeight: 900, letterSpacing: '0.28em', textTransform: 'uppercase', fontFamily: 'sans-serif', marginBottom: '14px' }}>Reserve Your Place</span>
-                <h2 style={{ color: '#0d1f35', fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 10px' }}>Plan Your Private Journey</h2>
+                <h2 style={{ color: '#0d1f35', fontSize: isMobile ? '1.8rem' : 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 10px' }}>Plan Your Private Journey</h2>
                 <p style={{ color: '#8a8276', fontSize: '13.5px', fontFamily: 'sans-serif', lineHeight: '1.65', margin: 0 }}>No payment required. We review your request and reply with a private proposal within 24 hours.</p>
               </div>
 
               {/* Step 1 — Package */}
               <BookingStepCard number={1} title="Choose Your Package">
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '10px' }}>
                   {(pricing.length ? pricing : [{ tier: 'Private reference', price }]).map((row, index) => {
                     const sel = index === safePriceIndex;
                     const rowOld = oldPrice(details, row);

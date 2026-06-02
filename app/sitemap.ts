@@ -6,6 +6,8 @@ import { site } from '@/lib/seo';
 import { teamProfilePath, travelersTeam } from '@/lib/travelers-team';
 import { tripKinds, tripStylePath } from '@/lib/trip-styles';
 
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [tours, cruises, posts, styles] = await Promise.all([getContent('tours'), getContent('cruises'), getContent('posts'), getContent('styles')]);
   const staticRoutes = [

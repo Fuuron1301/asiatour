@@ -1,6 +1,25 @@
 import { CmsItem } from './types';
 import { tourPath } from './routing';
 import { brandContact, brandSocialLinks } from './brand-contact';
+import { supportedLocales, defaultLocale, localeOptions } from './i18n';
+
+/**
+ * Tạo alternates.languages cho hreflang — báo Google các phiên bản ngôn ngữ.
+ * Default locale (EN) không có prefix, các ngôn ngữ khác có /{locale}/ prefix.
+ */
+export function generateHreflangAlternates(canonicalPath: string): Record<string, string> {
+  const path = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
+  const localeMap: Record<string, string> = {};
+  for (const locale of supportedLocales) {
+    const localeUrl = locale === defaultLocale
+      ? absoluteUrl(path)
+      : absoluteUrl(path === '/' ? `/${locale}/` : `/${locale}${path}`);
+    const htmlLang = localeOptions.find((o) => o.locale === locale)?.htmlLang || locale;
+    localeMap[htmlLang] = localeUrl;
+  }
+  localeMap['x-default'] = absoluteUrl(path);
+  return localeMap;
+}
 
 export const site = {
   name: 'Ha Long Luxury Travel',

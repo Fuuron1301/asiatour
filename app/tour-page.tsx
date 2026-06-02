@@ -2,23 +2,29 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { TourDetailPage } from '@/components/tour-detail-page';
 import { CmsBlockRuntime } from '@/components/blocks/cms-block-runtime';
+import { JsonLd } from '@/components/seo/json-ld';
 import { getContent, getSingle } from '@/lib/cms';
-import { pageMetadata } from '@/lib/seo';
+import { pageMetadata, tourSchema, generateHreflangAlternates } from '@/lib/seo';
 import { HubKey } from '@/lib/types';
 import { tourHubKey, tourPath } from '@/lib/routing';
 
 export async function generateTourStaticParams(hubKey: HubKey) {
-  const tours = await getContent('tours');
-  return tours.filter((tour) => tourHubKey(tour) === hubKey).map((tour) => ({ tourSlug: tour.slug }));
+  try {
+    const tours = await getContent('tours');
+    return tours.filter((tour) => tourHubKey(tour) === hubKey).map((tour) => ({ tourSlug: tour.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateTourMetadata(slug: string, hubKey: HubKey): Promise<Metadata> {
   const tour = await getSingle('tours', slug);
   if (!tour || tourHubKey(tour) !== hubKey) return {};
   const metadata = pageMetadata(tour);
+  const path = tourPath(tour);
   return {
     ...metadata,
-    alternates: { canonical: tourPath(tour) }
+    alternates: { canonical: path, languages: generateHreflangAlternates(path) }
   };
 }
 
@@ -32,6 +38,7 @@ export async function RenderTourRoute({ slug, hubKey }: { slug: string; hubKey: 
   });
   return (
     <>
+      <JsonLd data={tourSchema(tour)} />
       <TourDetailPage tour={tour} relatedTours={relatedTours} relatedPosts={relatedPosts.length ? relatedPosts : posts.slice(0, 1)} />
       {tour.meta.blocks?.length ? <CmsBlockRuntime blocks={tour.meta.blocks} className="bg-[color:var(--cms-color-background)] px-4 py-16" /> : null}
     </>

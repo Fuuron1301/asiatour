@@ -75,7 +75,7 @@ const hotelSets = {
   ]
 };
 
-export const revalidate = 300;
+export const revalidate = 3600;
 export const dynamicParams = true;
 
 export function generateStaticParams() {

@@ -1,8 +1,8 @@
 import { CmsItem } from '@/lib/types';
 import type { ReactNode } from 'react';
+import dynamic from 'next/dynamic';
 import { HeroSection } from '@/components/sections/hero-section';
 import { WhyChooseUs } from '@/components/sections/why-choose-us';
-import { TestimonialCinema } from '@/components/sections/testimonial-cinema';
 import { HeroTourSearch } from '@/components/sections/hero-tour-search';
 import { CmsBlockRenderer } from '@/components/blocks/cms-block-renderer';
 import type { CmsBlockNode, ReusableBlockMap } from '@/lib/blocks/block-types';
@@ -17,8 +17,11 @@ import { JourneyFlow } from '@/components/sections/journey-flow';
 import { EasyBookingSteps } from '@/components/sections/easy-booking-steps';
 import { TravelDesignersStrip } from '@/components/sections/travel-designers-strip';
 import { TrustedByStrip } from '@/components/sections/trusted-by-strip';
-import { BlogPreview } from '@/components/sections/blog-preview';
-import { MemoryGallery } from '@/components/sections/memory-gallery';
+
+// Các section nặng ở cuối trang — lazy load để giảm JS bundle ban đầu
+const TestimonialCinema = dynamic(() => import('@/components/sections/testimonial-cinema').then(m => ({ default: m.TestimonialCinema })));
+const BlogPreview = dynamic(() => import('@/components/sections/blog-preview').then(m => ({ default: m.BlogPreview })));
+const MemoryGallery = dynamic(() => import('@/components/sections/memory-gallery').then(m => ({ default: m.MemoryGallery })));
 
 type HomePageProps = {
   tours: CmsItem[];

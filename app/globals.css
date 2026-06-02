@@ -54,6 +54,14 @@ body {
   touch-action: manipulation;
   /* Prevent callout on long-press */
   -webkit-tap-highlight-color: transparent;
+  /* Thêm padding-bottom trên mobile cho sticky bar (~60px + safe-area) */
+  padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
 }
 
 /* Touch-friendly interactive elements — 44px minimum tap target */

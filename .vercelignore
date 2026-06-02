@@ -1,0 +1,23 @@
+# Thư mục ảnh chụp màn hình mobile - không cần deploy
+mobile-ss-ver2/
+
+# Dependencies - Vercel tự cài
+node_modules/
+
+# Build output - Vercel tự build
+.next/
+
+# Tài liệu nội bộ
+docs/
+
+# Dữ liệu phát triển
+scripts/
+
+# Files môi trường local
+.env.local
+.env.development
+
+# Backup
+*.rar
+*.zip
+backup_*

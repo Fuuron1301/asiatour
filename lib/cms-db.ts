@@ -1,5 +1,4 @@
 ﻿import { CmsPostType } from '@prisma/client';
-import { unstable_noStore as noStore } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { normalizeBlockTree } from '@/lib/blocks/cms-runtime';
 import type { CmsItem } from '@/lib/types';
@@ -189,7 +188,6 @@ async function getDbPostsRaw(postType: CmsPostType) {
 export async function getDatabaseContent(type: string): Promise<CmsItem[] | null> {
   if (!canUseDatabase() || !(type in collectionToPostType)) return null;
   try {
-    noStore();
     const items = await getDbPostsRaw(collectionToPostType[type as PublicCollection]);
     return items.map(dbPostToCmsItem);
   } catch (error) {

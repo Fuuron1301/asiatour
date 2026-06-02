@@ -14,7 +14,7 @@ const nextConfig = {
   images: {
     // Serve AVIF first (best compression), fallback to WebP, then original
     formats: ['image/avif', 'image/webp'],
-    qualities: [75, 90, 92, 94, 95, 96, 100],
+    qualities: [75, 85, 90, 92, 95],
     // Cache optimized images for 1 year
     minimumCacheTTL: 31536000,
     remotePatterns: [
@@ -24,20 +24,19 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
-    // Ngăn NFT bundle các file ảnh tĩnh trong public/ vào serverless function
-    // public/ được Vercel CDN phục vụ riêng, không cần trong function bundle
-    outputFileTracingExcludes: {
-      '**': [
-        './public/**',
-        './mobile-ss-ver2/**',
-        './docs/**',
-        './_extracted_new/**',
-        './_mobile_extract/**',
-        './src_extracted/**',
-        './base/**',
-        './halong-cruise-wp/**',
-      ],
-    },
+  },
+  // Ngăn NFT bundle các file nặng vào serverless function (Next.js 15+ stable)
+  outputFileTracingExcludes: {
+    '**': [
+      './public/**',
+      './mobile-ss-ver2/**',
+      './docs/**',
+      './_extracted_new/**',
+      './_mobile_extract/**',
+      './src_extracted/**',
+      './base/**',
+      './halong-cruise-wp/**',
+    ],
   },
   async headers() {
     // In development avoid setting long-lived immutable Cache-Control for Next static chunks
@@ -53,10 +52,10 @@ const nextConfig = {
     };
 
     const cssAndImageCacheHeader = {
-      // Cache CSS and image assets for 30 minutes (1800 seconds)
+      // Cache CSS and image assets for 1 year in production
       source: '/(:path*\\.(?:css|png|jpg|jpeg|svg|webp|avif|gif))',
       headers: [
-        { key: 'Cache-Control', value: 'public, max-age=1800' }
+        { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
       ]
     };
 

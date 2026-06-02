@@ -14,7 +14,7 @@ export function SafeTourImage({ src, alt, fallbackSrcs = [], onError, ...props }
   const fallbackKey = sources.join('|');
   const [fallbackState, setFallbackState] = useState({ key: fallbackKey, index: 0 });
   const sourceIndex = fallbackState.key === fallbackKey ? fallbackState.index : 0;
-  const quality = props.quality ?? 100;
+  const quality = props.quality ?? 85;
 
   const activeSrc = sources[sourceIndex] || src;
   const shouldBypassOptimizer = props.unoptimized || /upload\.wikimedia\.org/i.test(activeSrc);

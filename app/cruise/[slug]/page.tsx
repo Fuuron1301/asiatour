@@ -13,7 +13,7 @@ import { CruiseCard } from '@/components/cruise-card';
 import { TailorMadeForm } from '@/components/tailor-made-form';
 import { createBookingTourCatalog } from '@/lib/booking-tour-matcher';
 
-export const revalidate = 300;
+export const revalidate = 3600;
 export const dynamicParams = true;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

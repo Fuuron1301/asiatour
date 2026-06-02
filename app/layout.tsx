@@ -40,9 +40,10 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { StickyCta } from '@/components/sticky-cta';
 import { JsonLd } from '@/components/seo/json-ld';
-import { travelAgencySchema, site } from '@/lib/seo';
+import { travelAgencySchema, site, generateHreflangAlternates } from '@/lib/seo';
 import { Analytics } from '@/components/analytics';
 import { WhatsAppButton } from '@/components/whatsapp-button';
+import { MobileStickyBar } from '@/components/mobile-sticky-bar';
 import { ScrollToTopButton } from '@/components/scroll-to-top-button';
 import { HomeAfterContent } from '@/components/home/home-after-content';
 import { DevExtensionErrorGuard } from '@/components/dev-extension-error-guard';
@@ -58,7 +59,7 @@ import { LocaleDocumentSync } from '@/components/locale-document';
 import { PublicAutoTranslator } from '@/components/public-auto-translator';
 import { PremiumToast } from '@/components/premium-toast';
 
-export const revalidate = 900;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -84,7 +85,7 @@ export const metadata: Metadata = {
     description: site.description,
     images: [`${site.url}/images/og-default.jpg`]
   },
-  alternates: { canonical: site.url },
+  alternates: { canonical: site.url, languages: generateHreflangAlternates('/') },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1 } }
 };
 
@@ -121,7 +122,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
-      <body style={designStyle} suppressHydrationWarning>
+      <body style={designStyle} suppressHydrationWarning className="pb-[60px] md:pb-0">
         <DevExtensionErrorGuard />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <LocaleDocumentSync />
@@ -151,6 +152,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <StickyCta />
           <ScrollToTopButton />
           <WhatsAppButton />
+          <MobileStickyBar />
           <PremiumToast />
           <Analytics />
           <JsonLd data={travelAgencySchema()} />

@@ -183,8 +183,7 @@ export function TripStyleDeck({ content = defaultHomeSectionContent.styles }: { 
                 alt={activeKind.alt}
                 fill
                 sizes="(min-width: 1280px) 720px, (min-width: 1024px) 52vw, 100vw"
-                quality={100}
-                unoptimized
+                quality={85}
                 priority={activeIndex === 0}
                 suppressHydrationWarning
                 className="object-cover object-center brightness-[1.05] contrast-[1.08] saturate-[1.08] transition duration-700 ease-luxe"

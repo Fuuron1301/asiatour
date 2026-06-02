@@ -9,7 +9,7 @@ import { CTAButton } from '@/components/ui/cta-button';
 import { Eyebrow, Heading } from '@/components/ui/typography';
 import { findTravelersTeamMember, travelersTeam, travelersTeamSourceUrl } from '@/lib/travelers-team';
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return travelersTeam.map((member) => ({ slug: member.slug }));

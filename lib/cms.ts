@@ -1,5 +1,4 @@
 import { fallbackCruises, fallbackPosts, fallbackStyles, fallbackTestimonials, fallbackTours } from './fallback-data';
-import { unstable_noStore as noStore } from 'next/cache';
 import { readAdminContentStore, type AdminContentStore } from './admin-content-store';
 import { getDatabaseContent } from './cms-db';
 import { defaultLocale, normalizeLocale } from './i18n';
@@ -81,7 +80,6 @@ async function getSourceItems(type: CmsCollectionType, fallbackAllowed: boolean)
 }
 
 export async function getContent(type: CmsCollectionType, locale?: string | null): Promise<CmsItem[]> {
-  noStore();
   const requestLocale = locale ? normalizeLocale(locale, defaultLocale) : await getRequestLocale(defaultLocale);
   const databaseItems = await getDatabaseContent(type);
   const fallbackAllowed = canUseFallback(type);
