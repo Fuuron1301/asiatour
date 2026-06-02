@@ -120,6 +120,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://images.pexels.com" />
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        {/* YouTube facade: preconnect cho thumbnail (load ngay) + YouTube embed (load on click) */}
+        <link rel="preconnect" href="https://img.youtube.com" />
+        <link rel="dns-prefetch" href="https://www.youtube.com" />
       </head>
       <body style={designStyle} suppressHydrationWarning>
         <DevExtensionErrorGuard />
