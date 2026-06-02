@@ -66,7 +66,7 @@ export function EasyBookingSteps({ content = defaultHomeSectionContent.bookingSt
                 alt={content.imageAlt}
                 fill
                 sizes="(min-width: 1440px) 410px, 100vw"
-                quality={100}
+                quality={85}
                 className="object-cover object-[52%_54%] contrast-[1.06] saturate-[1.08] transition duration-700 ease-luxe group-hover/image:scale-[1.04]"
               />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,27,43,0.02),rgba(11,27,43,0.14)_36%,rgba(11,27,43,0.76)_100%)]" />

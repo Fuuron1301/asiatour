@@ -282,8 +282,6 @@ const reliableTourImages: Record<string, string[]> = {
   default: ['/images/hubs/vietnam-hoi-an-ancient-town-4k-crisp.jpg', '/images/collections/multi-country-mekong-sunset-4k.jpg', '/images/trip-styles/luxury-stays-4k.jpg']
 };
 
-const warmedImages = new Set<string>();
-
 function readText(value: unknown) {
   if (typeof value === 'number' && Number.isFinite(value)) return String(value);
   return typeof value === 'string' && value.trim() ? value.trim() : undefined;
@@ -323,20 +321,6 @@ function isUnreliableImage(src: string) {
 function imageForTour(tour: CmsItem) {
   const source = readText(tour.featuredImage);
   return source && !isUnreliableImage(source) ? source : fallbackImageFor(tour);
-}
-
-function warmImage(src: string) {
-  if (typeof window === 'undefined' || warmedImages.has(src)) return;
-  warmedImages.add(src);
-  const img = new window.Image();
-  img.decoding = 'async';
-  img.src = src;
-}
-
-function warmTourImages(tours: Array<CmsItem | undefined>) {
-  tours.forEach((tour) => {
-    if (tour) warmImage(imageForTour(tour));
-  });
 }
 
 function readRatingNumber(value: unknown) {
@@ -396,13 +380,13 @@ function ReliableTourImage({
   const src = failedSrc === preferredSrc ? fallbackSrc : preferredSrc;
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src={src}
       alt={tour.title}
-      loading={priority ? 'eager' : 'lazy'}
-      fetchPriority={priority ? 'high' : 'auto'}
-      decoding="async"
+      fill
+      priority={priority}
+      sizes="(min-width: 1280px) 30vw, (min-width: 640px) 45vw, 90vw"
+      quality={85}
       className={className}
       onError={() => {
         if (src !== fallbackSrc) setFailedSrc(preferredSrc);
@@ -613,8 +597,8 @@ function SpotlightJourney({ collection }: { collection: SpotlightCollection }) {
           src={collection.image}
           alt={collection.imageAlt}
           fill
-          sizes="(min-width: 1280px) 1200px, 100vw"
-          quality={100}
+          sizes="(min-width: 1280px) 60vw, 100vw"
+          quality={85}
           priority={collection.id === 'vietnam'}
           className="object-cover transition duration-700 ease-luxe group-hover:scale-105"
           decoding="async"
@@ -665,31 +649,19 @@ export function FeaturedTours({ tours, content = defaultHomeSectionContent.featu
   }), [normalizedReviewStartIndex, reviewTours, reviewWindowSize]);
 
   useEffect(() => {
-    warmImage(spotlight.image);
-    warmImage(spotlightCollections[(activeSpotlightIndex + 1) % spotlightCollections.length].image);
-    warmImage(spotlightCollections[(activeSpotlightIndex - 1 + spotlightCollections.length) % spotlightCollections.length].image);
-
-    if (reviewTours.length) {
-      warmTourImages([
-        ...reviewWindowTours,
-        reviewTours[(normalizedReviewStartIndex + reviewWindowSize) % reviewTours.length],
-        reviewTours[(normalizedReviewStartIndex - 1 + reviewTours.length) % reviewTours.length]
-      ]);
-    }
+    // Image preloading removed — was loading raw 4K JPGs bypassing Next.js optimization
   }, [activeSpotlightIndex, normalizedReviewStartIndex, reviewTours, reviewWindowSize, reviewWindowTours, spotlight, visibleTours]);
 
   function moveSpotlight(direction: -1 | 1) {
     animateCarouselNode(spotlightMotionRef.current, direction, 18);
     setSpotlightIndex((current) => {
       const next = (current + direction + spotlightCollections.length) % spotlightCollections.length;
-      warmImage(spotlightCollections[next].image);
       return next;
     });
   }
 
   function selectSpotlight(index: number) {
     animateCarouselNode(spotlightMotionRef.current, index > activeSpotlightIndex ? 1 : -1, 14);
-    warmImage(spotlightCollections[index].image);
     setSpotlightIndex(index);
   }
 
@@ -698,11 +670,6 @@ export function FeaturedTours({ tours, content = defaultHomeSectionContent.featu
     setReviewStartIndex((current) => {
       if (!reviewTours.length) return 0;
       const next = (current + direction + reviewTours.length) % reviewTours.length;
-      warmTourImages([
-        reviewTours[next],
-        reviewTours[(next + reviewWindowSize) % reviewTours.length],
-        reviewTours[(next + reviewWindowSize + 1) % reviewTours.length]
-      ]);
       return next;
     });
   }

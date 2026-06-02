@@ -22,7 +22,7 @@ export function TripDesignBanner() {
         alt=""
         fill
         sizes="100vw"
-        quality={100}
+        quality={85}
         className="object-cover object-[54%_58%] brightness-[0.96] contrast-[1.05] saturate-[1.04]"
         aria-hidden="true"
       />
