@@ -53,7 +53,7 @@ export function pageMetadata(item?: CmsItem | null, fallbackTitle = site.name, f
   return {
     title,
     description,
-    alternates: { canonical },
+    alternates: { canonical, languages: generateHreflangAlternates(itemPath) },
     openGraph: {
       type: 'website' as const,
       title,
@@ -110,14 +110,34 @@ export function travelAgencySchema() {
 }
 
 export function tourSchema(tour: CmsItem) {
+  const details = tour.meta?.details || {};
+  const priceFromUsd = typeof details.priceFromUsd === 'number' && details.priceFromUsd > 0 ? details.priceFromUsd : null;
+  const duration = typeof details.duration === 'string' && details.duration ? details.duration : null;
+  const country = typeof details.country === 'string' && details.country ? details.country : null;
   return {
     '@context': 'https://schema.org',
     '@type': 'TouristTrip',
     name: tour.title,
     description: tour.excerpt,
-    image: tour.featuredImage,
+    image: tour.featuredImage || `${site.url}/images/og-default.jpg`,
     url: absoluteUrl(tourPath(tour)),
-    itinerary: tour.meta.itinerary?.map((step) => step.title || step.day) || []
+    provider: {
+      '@type': 'TravelAgency',
+      name: site.name,
+      url: site.url
+    },
+    ...(country ? { touristType: country } : {}),
+    ...(duration ? { itinerayDuration: duration } : {}),
+    itinerary: tour.meta?.itinerary?.map((step) => step.title || step.day) || [],
+    ...(priceFromUsd ? {
+      offers: {
+        '@type': 'Offer',
+        price: priceFromUsd,
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        url: absoluteUrl(tourPath(tour))
+      }
+    } : {})
   };
 }
 

@@ -1,4 +1,4 @@
-import { unstable_noStore as noStore } from 'next/cache';
+import { unstable_cache } from 'next/cache';
 import { defaultDesignTokens, normalizeDesignTokens, type DesignTokens } from '@/lib/admin/design-service';
 import { prisma } from '@/lib/prisma';
 
@@ -29,12 +29,21 @@ async function getActiveDesignTokensUncached(): Promise<DesignTokens> {
   }
 }
 
+// Next.js Data Cache — tồn tại qua cold starts trên Vercel
+const _getDesignTokensNextCache = unstable_cache(
+  () => getActiveDesignTokensUncached(),
+  ['design-tokens-active'],
+  { revalidate: 900, tags: ['design-tokens'] }
+);
+
 export async function getActiveDesignTokens(): Promise<DesignTokens> {
+  // In-memory cache: nhanh trong cùng Lambda instance
   const now = Date.now();
   if (cachedDesignTokens && now - cachedDesignTokens.timestamp < DESIGN_CACHE_TTL) {
     return cachedDesignTokens.data;
   }
-  const data = await getActiveDesignTokensUncached();
+  // Next.js Data Cache: sống qua cold starts
+  const data = await _getDesignTokensNextCache();
   cachedDesignTokens = { data, timestamp: now };
   return data;
 }

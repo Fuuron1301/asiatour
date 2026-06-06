@@ -1,4 +1,5 @@
 ﻿import { CmsPostType } from '@prisma/client';
+import { unstable_cache } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { normalizeBlockTree } from '@/lib/blocks/cms-runtime';
 import type { CmsItem } from '@/lib/types';
@@ -185,7 +186,7 @@ async function getDbPostsRaw(postType: CmsPostType) {
   });
 }
 
-export async function getDatabaseContent(type: string): Promise<CmsItem[] | null> {
+async function getDatabaseContentUncached(type: string): Promise<CmsItem[] | null> {
   if (!canUseDatabase() || !(type in collectionToPostType)) return null;
   try {
     const items = await getDbPostsRaw(collectionToPostType[type as PublicCollection]);
@@ -196,6 +197,18 @@ export async function getDatabaseContent(type: string): Promise<CmsItem[] | null
     }
     return null;
   }
+}
+
+// Next.js Data Cache — tồn tại qua cold starts trên Vercel
+const _getDatabaseContentCached = unstable_cache(
+  (type: string) => getDatabaseContentUncached(type),
+  ['database-content'],
+  { revalidate: 900, tags: ['cms-content'] }
+);
+
+export async function getDatabaseContent(type: string): Promise<CmsItem[] | null> {
+  if (!canUseDatabase() || !(type in collectionToPostType)) return null;
+  return _getDatabaseContentCached(type);
 }
 
 

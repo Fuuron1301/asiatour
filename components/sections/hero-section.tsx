@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
+import dynamic from 'next/dynamic';
 import { Container } from '@/components/layout/container';
 import { MagneticButton } from '@/components/interactions/magnetic-button';
 import { Eyebrow, Heading, Lead } from '@/components/ui/typography';
 import { CinematicHeroLayer, type HeroLayerImage } from '@/components/3d/cinematic-hero-layer';
-import { HeroTourSearch } from '@/components/sections/hero-tour-search';
+// Lazy-load HeroTourSearch — phức tạp (useState, routing) nhưng không cần SSR critical path
+const HeroTourSearch = dynamic(() => import('@/components/sections/hero-tour-search').then(m => m.HeroTourSearch));
 
 export function HeroSection({
   eyebrow,
@@ -35,8 +37,8 @@ export function HeroSection({
       <div className="absolute inset-0">
         {cinematic ? <CinematicHeroLayer image={image} images={images} imagePosition={imagePosition} title={title} /> : null}
       </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-navy/42 via-navy/50 to-navy/94" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(11,27,43,0.16),rgba(11,27,43,0.48)_58%,rgba(11,27,43,0.74)_100%)]" />
+      {/* Merge 2 gradient divs thành 1 → giảm compositing layers → cải thiện paint performance */}
+      <div className="absolute inset-0" style={{background:'linear-gradient(to bottom,rgba(11,27,43,0.42) 0%,rgba(11,27,43,0.50) 50%,rgba(11,27,43,0.94) 100%),radial-gradient(circle at 50% 45%,rgba(11,27,43,0.16) 0%,rgba(11,27,43,0.48) 58%,rgba(11,27,43,0.74) 100%)'}} />
       <Container width={showPlanningFilter ? 'page' : 'content'} className="relative flex min-h-[clamp(560px,82svh,720px)] items-center justify-center pt-[var(--site-header-height)] text-center">
         <div className={showPlanningFilter ? 'w-full max-w-[1480px]' : 'max-w-[960px]'}>
           <Eyebrow className="!text-[clamp(10px,0.72vw,13px)] !font-black !tracking-[0.28em] [text-shadow:0_2px_14px_rgba(0,0,0,0.55)]">{eyebrow}</Eyebrow>

@@ -45,7 +45,6 @@ import { Analytics } from '@/components/analytics';
 import { WhatsAppButton } from '@/components/whatsapp-button';
 import { MobileStickyBar } from '@/components/mobile-sticky-bar';
 import { ScrollToTopButton } from '@/components/scroll-to-top-button';
-import { HomeAfterContent } from '@/components/home/home-after-content';
 import { DevExtensionErrorGuard } from '@/components/dev-extension-error-guard';
 import { CmsBlockRuntime } from '@/components/blocks/cms-block-runtime';
 import { getSiteContent } from '@/lib/site-content';
@@ -121,6 +120,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://images.pexels.com" />
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        {/* Preload hero image — ngăn LCP penalty khi hero stream trong Suspense boundary */}
+        {siteContent.home?.hero?.images?.[0]?.src && (
+          <link
+            rel="preload"
+            as="image"
+            href={`/_next/image?url=${encodeURIComponent(siteContent.home.hero.images[0].src)}&w=1920&q=75`}
+          />
+        )}
         {/* YouTube facade: preconnect cho thumbnail (load ngay) + YouTube embed (load on click) */}
         <link rel="preconnect" href="https://img.youtube.com" />
         <link rel="dns-prefetch" href="https://www.youtube.com" />
@@ -141,7 +148,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Header siteContent={siteContent} primaryMenu={primaryMenu} />
           )}
           {children}
-          <HomeAfterContent />
           {hasDbFooterTemplate ? (
             <div data-cms-theme-region="footer">
               <CmsBlockRuntime

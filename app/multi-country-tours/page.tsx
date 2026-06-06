@@ -3,11 +3,18 @@ import { HubPage } from '@/components/hub-page';
 import { hubs } from '@/lib/fallback-data';
 import { getSiteContent } from '@/lib/site-content';
 import { resolveStaticPagesContent } from '@/lib/site-content-schema';
+import { absoluteUrl, generateHreflangAlternates } from '@/lib/seo';
+
+const PAGE_PATH = '/multi-country-tours/';
 
 export async function generateMetadata(): Promise<Metadata> {
   const siteContent = await getSiteContent();
   const override = resolveStaticPagesContent(siteContent).hubs['multi-country'] || {};
-  return { title: override.title || hubs['multi-country'].title, description: override.intro || hubs['multi-country'].intro };
+  return {
+    title: override.title || hubs['multi-country'].title,
+    description: override.intro || hubs['multi-country'].intro,
+    alternates: { canonical: absoluteUrl(PAGE_PATH), languages: generateHreflangAlternates(PAGE_PATH) }
+  };
 }
 
 export default function Page() {

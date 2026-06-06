@@ -663,7 +663,7 @@ export function TailorMadeForm({ compact = false, tourCatalog = [] }: { compact?
       {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />}
       <input type="text" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" {...form.register('website')} />
       <div className={cn('relative z-10 border-b border-[#eadcc8] bg-[linear-gradient(180deg,#fffdf8_0%,#faf5ec_100%)] text-navy', compact ? 'px-[18px] py-[18px]' : 'px-7 py-7 md:px-10 md:py-9 lg:px-12')}>
-        <div className="grid grid-cols-3 gap-2 min-[420px]:gap-3 min-[520px]:gap-4 md:gap-5">
+        <div className={cn('grid grid-cols-3 gap-2 min-[420px]:gap-3 min-[520px]:gap-4', !compact && 'md:gap-5')}>
           {bookingPhases.map((phase, index) => {
             const active = visualPhase === index;
             const done = visualPhase > index;
@@ -673,14 +673,15 @@ export function TailorMadeForm({ compact = false, tourCatalog = [] }: { compact?
                 className={cn(
                   'flex min-w-0 flex-col items-center gap-1.5 rounded-xl border-2 bg-[#fffefb] px-2 py-3 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.76)] transition duration-300 ease-luxe',
                   'min-[520px]:flex-row min-[520px]:gap-3 min-[520px]:rounded-xl min-[520px]:px-3 min-[520px]:py-3 min-[520px]:text-left',
-                  'md:gap-4 md:rounded-2xl md:px-4 md:py-4 lg:gap-8 lg:rounded-2xl lg:px-8 lg:py-7 xl:gap-10 xl:px-10 xl:py-8',
+                  !compact && 'md:gap-4 md:rounded-2xl md:px-4 md:py-4 lg:gap-5 lg:rounded-2xl lg:px-5 lg:py-5',
                   done || active ? 'border-gold/35' : 'border-navy/8'
                 )}
               >
                 <span
                   className={cn(
                     'grid aspect-square shrink-0 place-items-center rounded-full border-2 font-black transition duration-300 ease-luxe',
-                    'h-7 w-7 text-[11px] min-[520px]:h-8 min-[520px]:w-8 md:h-10 md:w-10 md:text-[13px] lg:h-11 lg:w-11 lg:text-[14px] xl:h-12 xl:w-12 xl:text-[15px]',
+                    'h-7 w-7 text-[11px] min-[520px]:h-8 min-[520px]:w-8',
+                    !compact && 'md:h-10 md:w-10 md:text-[13px] lg:h-11 lg:w-11 lg:text-[14px] xl:h-12 xl:w-12 xl:text-[15px]',
                     done || active
                       ? 'border-gold bg-gold text-navy shadow-[0_8px_20px_rgba(200,169,106,0.24)]'
                       : 'border-[#dfd2bb] bg-pearl text-navy/36'
@@ -688,16 +689,18 @@ export function TailorMadeForm({ compact = false, tourCatalog = [] }: { compact?
                 >
                   {done ? <Check className="h-3 w-3 stroke-[3] md:h-4 md:w-4" /> : index + 1}
                 </span>
-                <div className="min-w-0">
+                <div className="min-w-0 w-full min-[520px]:flex-1 overflow-hidden">
                   <p className={cn(
-                    'font-black uppercase leading-tight',
-                    'text-[8px] tracking-[0.04em] min-[420px]:text-[9px] min-[520px]:text-[10px] min-[520px]:tracking-[0.07em] md:text-[11px] md:tracking-[0.09em] lg:text-[13px] xl:text-[14px] xl:tracking-[0.1em]',
+                    'font-black uppercase leading-tight truncate',
+                    'text-[8px] tracking-[0.04em] min-[420px]:text-[9px] min-[520px]:text-[10px] min-[520px]:tracking-[0.07em]',
+                    !compact && 'md:text-[11px] md:tracking-[0.09em] lg:text-[12px] xl:text-[13px]',
                     active || done ? 'text-navy' : 'text-navy/40'
                   )}>
                     {phase.title}
                   </p>
                   <p className={cn(
-                    'hidden font-semibold text-navy/50 min-[520px]:mt-0.5 min-[520px]:block min-[520px]:text-[10px] md:mt-1 md:text-[11px] lg:mt-1.5 lg:text-[12px] xl:text-[13px]',
+                    'hidden font-semibold text-navy/50 min-[520px]:mt-0.5 min-[520px]:block min-[520px]:text-[10px]',
+                    !compact && 'md:mt-1 md:text-[11px] lg:mt-1.5 lg:text-[12px] xl:text-[13px]',
                   )}>
                     {phase.subtitle}
                   </p>

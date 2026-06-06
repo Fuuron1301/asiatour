@@ -225,7 +225,7 @@ export function DestinationMosaic({ content = defaultHomeSectionContent.destinat
                   imageAlt={destination.imageAlt}
                   imagePosition={destination.imagePosition}
                   landmarks={destination.landmarks}
-                  imagePriority={index < 2}
+                  imagePriority={false}
                   variant={variant}
                   className={destination.className}
                 >

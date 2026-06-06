@@ -1,4 +1,4 @@
-import { unstable_noStore as noStore } from 'next/cache';
+import { unstable_cache } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import type { CmsMenuItem, CmsMenuTree } from '@/lib/menus-types';
 
@@ -138,14 +138,23 @@ async function getMenuByLocationUncached(location: string): Promise<CmsMenuTree 
   }
 }
 
+// Next.js Data Cache — tồn tại qua cold starts trên Vercel
+const _getMenuNextCache = unstable_cache(
+  (location: string) => getMenuByLocationUncached(location),
+  ['menu-by-location'],
+  { revalidate: 900, tags: ['menus'] }
+);
+
 export async function getMenuByLocation(location: string): Promise<CmsMenuTree | null> {
   const normalizedLocation = location.trim();
+  // In-memory cache: nhanh trong cùng Lambda instance
   const now = Date.now();
   const cached = menuCache.get(normalizedLocation);
   if (cached && now - cached.timestamp < MENU_CACHE_TTL) {
     return cached.data;
   }
-  const data = await getMenuByLocationUncached(normalizedLocation);
+  // Next.js Data Cache: sống qua cold starts
+  const data = await _getMenuNextCache(normalizedLocation);
   menuCache.set(normalizedLocation, { data, timestamp: now });
   return data;
 }

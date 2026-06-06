@@ -33,11 +33,15 @@ type HomePageProps = {
   siteContent?: SiteContent;
   cmsBlocks?: CmsBlockNode[];
   reusableBlocks?: ReusableBlockMap;
+  /** Bỏ qua <main> wrapper — dùng khi page.tsx tự quản lý <main> */
+  noMain?: boolean;
+  /** Bỏ qua HeroSection bên trong — dùng khi hero được render riêng bên ngoài */
+  hideHero?: boolean;
 };
 
 import { LuxeSection, LuxeContainer } from '@/components/ui/luxe-primitives';
 
-export function HomePage({ tours, testimonials, posts, siteContent = defaultSiteContent, cmsBlocks = [], reusableBlocks }: HomePageProps) {
+export function HomePage({ tours, testimonials, posts, siteContent = defaultSiteContent, cmsBlocks = [], reusableBlocks, noMain = false, hideHero = false }: HomePageProps) {
   const hero = siteContent.home.hero;
   const sectionContent = resolveHomeSectionContent(siteContent);
   const hasCmsBlocks = cmsBlocks.length > 0;
@@ -64,19 +68,21 @@ export function HomePage({ tours, testimonials, posts, siteContent = defaultSite
     )
   };
 
-  return (
-    <main className="ql-page-shell premium-compact">
-      <HeroSection
-        eyebrow={hero.eyebrow}
-        title={hero.title}
-        subtitle={hero.subtitle}
-        image={hero.image}
-        images={hero.images}
-        imagePosition={hero.images[0]?.position}
-        primaryCta={hero.primaryCta}
-        secondaryCta={hero.secondaryCta}
-        showPlanningFilter={true}
-      />
+  const content = (
+    <>
+      {!hideHero && (
+        <HeroSection
+          eyebrow={hero.eyebrow}
+          title={hero.title}
+          subtitle={hero.subtitle}
+          image={hero.image}
+          images={hero.images}
+          imagePosition={hero.images[0]?.position}
+          primaryCta={hero.primaryCta}
+          secondaryCta={hero.secondaryCta}
+          showPlanningFilter={true}
+        />
+      )}
       {hasCmsBlocks ? (
         <LuxeSection className="py-[var(--ql-section-md)] bg-[color:var(--cms-color-background)]">
           <LuxeContainer className="max-w-7xl">
@@ -87,6 +93,13 @@ export function HomePage({ tours, testimonials, posts, siteContent = defaultSite
       {siteContent.home.sections.order.map((sectionId) => (
         siteContent.home.sections.visibility[sectionId] ? <div key={sectionId}>{sections[sectionId]}</div> : null
       ))}
+    </>
+  );
+
+  if (noMain) return content;
+  return (
+    <main className="ql-page-shell premium-compact">
+      {content}
     </main>
   );
 }

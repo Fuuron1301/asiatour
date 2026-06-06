@@ -56,7 +56,6 @@ export function HomeFeatureSpotlight({ content = defaultHomeSectionContent.spotl
               fill
               sizes="(min-width: 1280px) 55vw, 100vw"
               quality={85}
-              priority
               className="object-cover contrast-[1.08] saturate-[1.07]"
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,27,43,0.04),rgba(11,27,43,0.12)_42%,rgba(11,27,43,0.58)_100%)]" />

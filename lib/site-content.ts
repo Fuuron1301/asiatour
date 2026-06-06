@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { unstable_noStore as noStore } from 'next/cache';
+import { unstable_cache, revalidateTag } from 'next/cache';
 import { Prisma } from '@prisma/client';
 import { prisma } from './prisma';
 import { defaultLocale, normalizeLocale } from './i18n';
@@ -193,21 +193,30 @@ async function getSiteContentUncached(requestLocale: Locale): Promise<SiteConten
   }
 }
 
+// Next.js Data Cache — tồn tại qua cold starts trên Vercel
+const _getSiteContentNextCache = unstable_cache(
+  (requestLocale: string) => getSiteContentUncached(requestLocale as Locale),
+  ['site-content'],
+  { revalidate: 900, tags: ['site-content'] }
+);
+
 export async function getSiteContent(locale?: string | null): Promise<SiteContent> {
   const requestLocale = locale ? normalizeLocale(locale, defaultLocale) : await getRequestLocale(defaultLocale);
+  // In-memory cache: nhanh trong cùng Lambda instance
   const now = Date.now();
   const cached = contentCache.get(requestLocale);
   if (cached && now - cached.timestamp < CACHE_TTL) {
     return cached.data;
   }
-
-  const data = await getSiteContentUncached(requestLocale);
+  // Next.js Data Cache: sống qua cold starts
+  const data = await _getSiteContentNextCache(requestLocale);
   contentCache.set(requestLocale, { data, timestamp: now });
   return data;
 }
 
 export async function saveSiteContent(input: unknown): Promise<SiteContent> {
   contentCache.clear();
+  revalidateTag('site-content');
   const content = normalizeSiteContent({ ...(isObject(input) ? input : {}), updatedAt: new Date().toISOString() });
   if (process.env.DATABASE_URL) {
     try {

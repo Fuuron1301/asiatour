@@ -700,8 +700,8 @@ export const defaultSiteContent: SiteContent = {
   home: {
     hero: {
       eyebrow: 'Tailor-made luxury travel in Southeast Asia',
-      title: 'Private journeys, designed with quiet precision.',
-      subtitle: 'Private Asia journeys across Vietnam, Laos, Cambodia, Thailand, Myanmar and beyond — tailor-made itineraries, small groups, seamless 5-star service.',
+      title: 'Tailor-made Vietnam & Asia Tours — Private Journeys',
+      subtitle: 'Private Asia tours across Vietnam, Laos, Cambodia, Thailand, Myanmar and beyond — tailor-made itineraries, small groups, seamless 5-star service.',
       image: defaultHeroImages[0].src,
       images: defaultHeroImages,
       primaryCta: { href: '/customize-your-trip/', label: 'Tailor-made Journey' },

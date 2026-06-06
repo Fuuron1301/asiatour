@@ -599,7 +599,7 @@ function SpotlightJourney({ collection }: { collection: SpotlightCollection }) {
           fill
           sizes="(min-width: 1280px) 60vw, 100vw"
           quality={85}
-          priority={collection.id === 'vietnam'}
+          priority={false}
           className="object-cover transition duration-700 ease-luxe group-hover:scale-105"
           decoding="async"
         />

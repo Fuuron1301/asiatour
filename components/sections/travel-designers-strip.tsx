@@ -110,7 +110,7 @@ export function TravelDesignersStrip({ content = defaultHomeSectionContent.desig
                         fill
                         sizes="176px"
                         quality={90}
-                        priority={index < 3}
+                        priority={false}
                         className="object-cover transition duration-500 ease-luxe group-hover:scale-105"
                       />
                     </span>

@@ -44,8 +44,13 @@ function subscribeHeroImageStore(key: string, images: HeroLayerImage[], fallback
 
   queueMicrotask(() => {
     if (cancelled || selectedImages.has(key)) return;
-    selectClientHeroImage(key, images, fallback);
-    onStoreChange();
+    const selected = selectClientHeroImage(key, images, fallback);
+    // Chỉ trigger re-render khi ảnh thực sự thay đổi (return visit với ảnh khác).
+    // Trên first visit: selected === fallback → không gọi onStoreChange() → tránh
+    // React reconciliation muộn do 4x CPU throttle → giảm LCP trên mobile.
+    if (selected.src !== fallback.src) {
+      onStoreChange();
+    }
   });
 
   return () => {
